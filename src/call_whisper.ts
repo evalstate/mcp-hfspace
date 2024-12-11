@@ -4,23 +4,26 @@ import { readFile } from "fs/promises";
 async function main() {
   if (process.argv.length < 3) {
     console.error("Please provide an audio file path as argument");
-    process.exit(1);
+//    process.exit(1);
   }
 
-  const audioFile = process.argv[2];
+  //const audioFile = process.argv[2];
 
   try {
-    const app = await Client.connect("openai/whisper", {
+    const app = await Client.connect("suno/bark", {
       events: ["data", "status"],
     });
+    const api = app.view_api();
+
     /*
     const submission = app.submit("/predict", {
       inputs: handle_file(audioFile),
     });
 */
     const submission = app.submit("/predict", [
-       handle_file(audioFile),
-       "transcribe"
+      "howdy!"
+//       handle_file(audioFile),
+//       "transcribe"
     ]);
 
     for await (const msg of submission) {
