@@ -1,0 +1,24 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required: []
+    properties:
+      workingDirectory:
+        type: string
+        description: The working directory for handling file uploads/downloads.
+      huggingFaceToken:
+        type: string
+        description: The token for accessing private Hugging Face spaces.
+      spaces:
+        type: array
+        items:
+          type: string
+        description: List of Hugging Face spaces to connect to.
+  commandFunction:
+    # A function that produces the CLI command to start the MCP on stdio.
+    |-
+    (config) => { return { command: 'node', args: ['build/index.js', ...(config.workingDirectory ? ['--work-dir=' + config.workingDirectory] : []), ...(config.huggingFaceToken ? ['--hf-token=' + config.huggingFaceToken] : []), ...(config.spaces || [])] }; }
