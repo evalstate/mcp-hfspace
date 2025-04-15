@@ -40,23 +40,23 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@gradio/client": "^1.8.0",
-    "@modelcontextprotocol/sdk": "0.6.0",
-    "mime": "^4.0.6",
+    "@gradio/client": "^1.14.2",
+    "@modelcontextprotocol/sdk": "1.9.0",
+    "mime": "^4.0.7",
     "minimist": "^1.2.8"
   },
   "devDependencies": {
-    "@eslint/js": "9.19.0",
+    "@eslint/js": "9.24.0",
     "@types/minimist": "^1.2.5",
-    "@types/node": "^20.11.24",
+    "@types/node": "^22.14.1",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
-    "eslint": "9.19.0",
-    "globals": "15.14.0",
+    "eslint": "9.24.0",
+    "globals": "16.0.0",
     "prettier": "latest",
-    "rimraf": "^5.0.1",
-    "typescript": "^5.3.3",
-    "typescript-eslint": "8.21.0",
-    "vitest": "^2.1.8"
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "8.30.1",
+    "vitest": "^3.1.1"
   }
 }
