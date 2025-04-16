@@ -24,7 +24,7 @@ export class SemanticSearch {
 
   async search(
     query: string,
-    limit: number = RESULTS_TO_RETURN,
+    limit: number = RESULTS_TO_RETURN
   ): Promise<SearchResult[]> {
     try {
       if (!query) {
@@ -46,7 +46,7 @@ export class SemanticSearch {
 
       if (!response.ok) {
         throw new Error(
-          `Search request failed: ${response.status} ${response.statusText}`,
+          `Search request failed: ${response.status} ${response.statusText}`
         );
       }
 
@@ -80,7 +80,7 @@ export class SemanticSearch {
       const id = result.id || "";
 
       markdown +=
-        `| [${escapeMarkdown(title)}](https://huggingface.co/api/spaces/${id}) ` +
+        `| [${escapeMarkdown(title)}](https://hf.co/spaces/${id}) ` +
         `| ${escapeMarkdown(description)} ` +
         `| ${escapeMarkdown(author)} ` +
         `| \`${escapeMarkdown(id)}\` |\n`;
