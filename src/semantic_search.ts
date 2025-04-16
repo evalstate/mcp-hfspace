@@ -80,7 +80,7 @@ export class SemanticSearch {
       const id = result.id || "";
 
       markdown +=
-        `| [${escapeMarkdown(title)}](https://huggingface.co/api/spaces/${id}) ` +
+        `| [${escapeMarkdown(title)}](https://hf.co/spaces/${id}) ` +
         `| ${escapeMarkdown(description)} ` +
         `| ${escapeMarkdown(author)} ` +
         `| \`${escapeMarkdown(id)}\` |\n`;

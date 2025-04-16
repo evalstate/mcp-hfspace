@@ -35,7 +35,7 @@ const server = new Server(
         list: true,
       },
     },
-  }
+  },
 );
 // Parse configuration
 const config = parseConfig();
@@ -46,7 +46,7 @@ process.chdir(config.workDir);
 
 const workingDir = new WorkingDirectory(
   config.workDir,
-  config.claudeDesktopMode
+  config.claudeDesktopMode,
 );
 
 // Create a map to store endpoints by their tool names
@@ -57,7 +57,7 @@ for (const spacePath of config.spacePaths) {
   try {
     const endpoint = await EndpointWrapper.createEndpoint(
       spacePath,
-      workingDir
+      workingDir,
     );
     endpoints.set(endpoint.toolDefinition().name, endpoint);
   } catch (e) {
@@ -108,7 +108,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         },
       },
       ...Array.from(endpoints.values()).map((endpoint) =>
-        endpoint.toolDefinition()
+        endpoint.toolDefinition(),
       ),
     ],
   };
@@ -196,7 +196,7 @@ server.setRequestHandler(ListPromptsRequestSchema, async () => {
         arguments: [],
       },
       ...Array.from(endpoints.values()).map((endpoint) =>
-        endpoint.promptDefinition()
+        endpoint.promptDefinition(),
       ),
     ],
   };
