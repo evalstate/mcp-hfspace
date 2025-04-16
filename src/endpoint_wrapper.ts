@@ -43,7 +43,7 @@ export function parsePath(path: string): EndpointPath {
 
   if (parts.length != 3) {
     throw new Error(
-      `Invalid Endpoint path format [${path}]. Use or vendor/space/endpoint`
+      `Invalid Endpoint path format [${path}]. Use or vendor/space/endpoint`,
     );
   }
 
@@ -74,19 +74,19 @@ export class EndpointWrapper {
     private endpointPath: EndpointPath,
     private endpoint: ApiEndpoint,
     private client: Client,
-    private workingDir: WorkingDirectory
+    private workingDir: WorkingDirectory,
   ) {
     this.converter = new GradioConverter(workingDir);
   }
 
   static async createEndpoint(
     configuredPath: string,
-    workingDir: WorkingDirectory
+    workingDir: WorkingDirectory,
   ): Promise<EndpointWrapper> {
     const pathParts = configuredPath.split("/");
     if (pathParts.length < 2 || pathParts.length > 3) {
       throw new Error(
-        `Invalid space path format [${configuredPath}]. Use: vendor/space or vendor/space/endpoint`
+        `Invalid space path format [${configuredPath}]. Use: vendor/space or vendor/space/endpoint`,
       );
     }
 
@@ -114,7 +114,7 @@ export class EndpointWrapper {
     if (config.debug) {
       await fs.writeFile(
         `${pathParts[0]}_${pathParts[1]}_debug_api.json`,
-        JSON.stringify(api, null, 2)
+        JSON.stringify(api, null, 2),
       );
     }
     // Try chosen API if specified
@@ -123,20 +123,20 @@ export class EndpointWrapper {
         parsePath(configuredPath),
         api.named_endpoints[endpointTarget],
         gradio,
-        workingDir
+        workingDir,
       );
     }
 
     // Try preferred APIs
     const preferredApi = preferredApis.find(
-      (name) => api.named_endpoints[name]
+      (name) => api.named_endpoints[name],
     );
     if (preferredApi) {
       return new EndpointWrapper(
         parsePath(`${configuredPath}${preferredApi}`),
         api.named_endpoints[preferredApi],
         gradio,
-        workingDir
+        workingDir,
       );
     }
 
@@ -147,14 +147,14 @@ export class EndpointWrapper {
         parsePath(`${configuredPath}${firstNamed[0]}`),
         firstNamed[1],
         gradio,
-        workingDir
+        workingDir,
       );
     }
 
     // Try unnamed endpoints
     const validUnnamed = Object.entries(api.unnamed_endpoints).find(
       ([, endpoint]) =>
-        endpoint.parameters.length > 0 && endpoint.returns.length > 0
+        endpoint.parameters.length > 0 && endpoint.returns.length > 0,
     );
 
     if (validUnnamed) {
@@ -162,7 +162,7 @@ export class EndpointWrapper {
         parsePath(`${configuredPath}/${validUnnamed[0]}`),
         validUnnamed[1],
         gradio,
-        workingDir
+        workingDir,
       );
     }
 
@@ -192,7 +192,7 @@ export class EndpointWrapper {
 
   async call(
     request: CallToolRequest,
-    server: Server
+    server: Server,
   ): Promise<CallToolResult> {
     const progressToken = request.params._meta?.progressToken as
       | string
@@ -207,7 +207,7 @@ export class EndpointWrapper {
     // Process each parameter, applying handle_file for file inputs
     for (const [key, value] of Object.entries(parameters)) {
       const param = endpointParams.find(
-        (p) => p.parameter_name === key || p.label === key
+        (p) => p.parameter_name === key || p.label === key,
       );
       if (param && isFileParameter(param) && typeof value === "string") {
         const file = await this.validatePath(value);
@@ -226,14 +226,14 @@ export class EndpointWrapper {
   async handleToolCall(
     parameters: Record<string, unknown>,
     progressToken: string | undefined,
-    server: Server
+    server: Server,
   ): Promise<CallToolResult> {
     const events = [];
     try {
       let result = null;
       const submission: AsyncIterable<GradioEvent> = this.client.submit(
         this.endpointPath.endpoint,
-        parameters
+        parameters,
       ) as AsyncIterable<GradioEvent>;
       const progressNotifier = createProgressNotifier(server);
       for await (const msg of submission) {
@@ -241,7 +241,7 @@ export class EndpointWrapper {
         if (msg.type === "data") {
           if (Array.isArray(msg.data)) {
             const hasContent = msg.data.some(
-              (item: unknown) => typeof item !== "object"
+              (item: unknown) => typeof item !== "object",
             );
 
             if (hasContent) result = msg.data;
@@ -262,7 +262,7 @@ export class EndpointWrapper {
       return await this.convertPredictResults(
         this.endpoint.returns,
         result,
-        this.endpointPath
+        this.endpointPath,
       );
     } catch (error) {
       const errorMessage =
@@ -274,7 +274,7 @@ export class EndpointWrapper {
           `${this.mcpToolName}_status_${crypto
             .randomUUID()
             .substring(0, 5)}.json`,
-          JSON.stringify(events, null, 2)
+          JSON.stringify(events, null, 2),
         );
       }
     }
@@ -283,7 +283,7 @@ export class EndpointWrapper {
   private async convertPredictResults(
     returns: ApiReturn[],
     predictResults: unknown[],
-    endpointPath: EndpointPath
+    endpointPath: EndpointPath,
   ): Promise<CallToolResult> {
     const content: (TextContent | ImageContent | EmbeddedResource)[] = [];
 
@@ -292,7 +292,7 @@ export class EndpointWrapper {
       const converted = await this.converter.convert(
         output,
         value as GradioResourceValue,
-        endpointPath
+        endpointPath,
       );
       content.push(converted);
     }
@@ -317,13 +317,13 @@ export class EndpointWrapper {
           name,
           description: prop?.description || name,
           required: schema.required?.includes(name) || false,
-        })
+        }),
       ),
     };
   }
 
   async getPromptTemplate(
-    args?: Record<string, string>
+    args?: Record<string, string>,
   ): Promise<GetPromptResult> {
     const schema = convertApiToSchema(this.endpoint);
     let promptText = `Using the ${this.mcpDescriptionName()}:\n\n`;
