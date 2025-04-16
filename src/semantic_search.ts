@@ -1,3 +1,5 @@
+import { config } from "./config.js";
+
 export interface SearchResult {
   id: string;
   title?: string;
@@ -11,26 +13,36 @@ export interface SearchResult {
   semanticRelevancyScore?: number;
 }
 
+const RESULTS_TO_RETURN = 10;
+
 export class SemanticSearch {
   private readonly apiUrl: string;
 
-  constructor() {
-    // Allow overriding the API URL for testing via environment variable
-    this.apiUrl =
-      process.env.HF_SEARCH_API_URL ||
-      "https://huggingface.co/api/spaces/semantic-search";
+  constructor(apiUrl?: string) {
+    this.apiUrl = apiUrl || "https://huggingface.co/api/spaces/semantic-search";
   }
 
-  async search(query: string, limit: number = 10): Promise<SearchResult[]> {
+  async search(
+    query: string,
+    limit: number = RESULTS_TO_RETURN
+  ): Promise<SearchResult[]> {
     try {
       if (!query) {
         return [];
       }
 
-      const encodedQuery = encodeURIComponent(query);
-      const url = `${this.apiUrl}?q=${encodedQuery}&sdk=gradio`;
+      const url =
+        `${this.apiUrl}?` + new URLSearchParams({ q: query, sdk: "gradio" });
 
-      const response = await fetch(url);
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (config.hfToken) {
+        headers["Authorization"] = `Bearer ${config.hfToken}`;
+      }
+
+      const response = await fetch(url, headers);
 
       if (!response.ok) {
         throw new Error(
@@ -67,7 +79,11 @@ export class SemanticSearch {
       const author = result.authorData?.fullname || result.author || "Unknown";
       const id = result.id || "";
 
-      markdown += `| ${escapeMarkdown(title)} | ${escapeMarkdown(description)} | ${escapeMarkdown(author)} | \`${escapeMarkdown(id)}\` |\n`;
+      markdown +=
+        `| [${escapeMarkdown(title)}](https://huggingface.co/api/spaces/${id}) ` +
+        `| ${escapeMarkdown(description)} ` +
+        `| ${escapeMarkdown(author)} ` +
+        `| \`${escapeMarkdown(id)}\` |\n`;
     }
 
     markdown +=

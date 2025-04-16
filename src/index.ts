@@ -94,7 +94,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         description:
           "Use semantic search to find an endpoint on the `Hugging Face Spaces` service. The search term will usually " +
           "be 3-7 words describing a task or activity the Person is trying to accomplish. The results are returned in a markdown table. " +
-          "After use, await specific guidance from the Person before taking further action or tool calls. ",
+          "Present all results to the Person. Await specific guidance from the Person before making further Tool calls.",
         inputSchema: {
           type: "object",
           properties: {
