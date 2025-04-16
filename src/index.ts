@@ -19,6 +19,7 @@ import {
 import { EndpointWrapper } from "./endpoint_wrapper.js";
 import { parseConfig } from "./config.js";
 import { WorkingDirectory } from "./working_directory.js";
+import { SemanticSearch } from "./semantic_search.js";
 
 // Create MCP server
 const server = new Server(
@@ -38,6 +39,7 @@ const server = new Server(
 );
 // Parse configuration
 const config = parseConfig();
+const semanticSearch = new SemanticSearch();
 
 // Change to configured working directory
 process.chdir(config.workDir);
@@ -89,13 +91,18 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: SEARCH_FOR_SPACE,
-        description: "Search for a space",
+        description:
+          "Use semantic search to find an endpoint on the `Hugging Face Spaces` service. The search term will usually " +
+          "be 3-7 words describing a task or activity the Person is trying to accomplish. The results are returned in a markdown table. " +
+          "After use, await specific guidance from the Person before taking further action or tool calls. ",
         inputSchema: {
           type: "object",
           properties: {
             query: {
               type: "string",
-              description: "The search query",
+              // TODO description assumes  user is using claude desktop which has knowledge of HF Spaces.
+              // consider updating for not CLAUDE_DESKTOP mode. 3.7 sys prompt refers to Human as Person
+              description: "The semantic search term to use.",
             },
           },
         },
@@ -121,6 +128,40 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         },
       ],
     };
+  }
+
+  if (SEARCH_FOR_SPACE === request.params.name) {
+    try {
+      const query = request.params.arguments?.query as string;
+      if (!query || typeof query !== "string") {
+        throw new Error("Search query must be a non-empty string");
+      }
+
+      const results = await semanticSearch.search(query);
+      const markdownTable = semanticSearch.formatSearchResults(results);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: markdownTable,
+          },
+        ],
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Search error: ${error.message}`,
+            },
+          ],
+          isError: true,
+        };
+      }
+      throw error;
+    }
   }
 
   const endpoint = endpoints.get(request.params.name);
