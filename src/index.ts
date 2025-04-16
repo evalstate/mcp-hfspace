@@ -2,7 +2,7 @@
 
 const AVAILABLE_RESOURCES = "Available Resources";
 const AVAILABLE_FILES = "available-files";
-
+const SEARCH_FOR_SPACE = "search-spaces";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { VERSION } from "./version.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -19,6 +19,7 @@ import {
 import { EndpointWrapper } from "./endpoint_wrapper.js";
 import { parseConfig } from "./config.js";
 import { WorkingDirectory } from "./working_directory.js";
+import { SemanticSearch } from "./semantic_search.js";
 
 // Create MCP server
 const server = new Server(
@@ -34,17 +35,18 @@ const server = new Server(
         list: true,
       },
     },
-  },
+  }
 );
 // Parse configuration
 const config = parseConfig();
+const semanticSearch = new SemanticSearch();
 
 // Change to configured working directory
 process.chdir(config.workDir);
 
 const workingDir = new WorkingDirectory(
   config.workDir,
-  config.claudeDesktopMode,
+  config.claudeDesktopMode
 );
 
 // Create a map to store endpoints by their tool names
@@ -55,7 +57,7 @@ for (const spacePath of config.spacePaths) {
   try {
     const endpoint = await EndpointWrapper.createEndpoint(
       spacePath,
-      workingDir,
+      workingDir
     );
     endpoints.set(endpoint.toolDefinition().name, endpoint);
   } catch (e) {
@@ -87,8 +89,26 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           properties: {},
         },
       },
+      {
+        name: SEARCH_FOR_SPACE,
+        description:
+          "Use semantic search to find an endpoint on the `Hugging Face Spaces` service. The search term will usually " +
+          "be 3-7 words describing a task or activity the Person is trying to accomplish. The results are returned in a markdown table. " +
+          "Present all results to the Person. Await specific guidance from the Person before making further Tool calls.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            query: {
+              type: "string",
+              // TODO description assumes  user is using claude desktop which has knowledge of HF Spaces.
+              // consider updating for not CLAUDE_DESKTOP mode. 3.7 sys prompt refers to Human as Person
+              description: "The semantic search term to use.",
+            },
+          },
+        },
+      },
       ...Array.from(endpoints.values()).map((endpoint) =>
-        endpoint.toolDefinition(),
+        endpoint.toolDefinition()
       ),
     ],
   };
@@ -108,6 +128,40 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         },
       ],
     };
+  }
+
+  if (SEARCH_FOR_SPACE === request.params.name) {
+    try {
+      const query = request.params.arguments?.query as string;
+      if (!query || typeof query !== "string") {
+        throw new Error("Search query must be a non-empty string");
+      }
+
+      const results = await semanticSearch.search(query);
+      const markdownTable = semanticSearch.formatSearchResults(results);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: markdownTable,
+          },
+        ],
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Search error: ${error.message}`,
+            },
+          ],
+          isError: true,
+        };
+      }
+      throw error;
+    }
   }
 
   const endpoint = endpoints.get(request.params.name);
@@ -142,7 +196,7 @@ server.setRequestHandler(ListPromptsRequestSchema, async () => {
         arguments: [],
       },
       ...Array.from(endpoints.values()).map((endpoint) =>
-        endpoint.promptDefinition(),
+        endpoint.promptDefinition()
       ),
     ],
   };
