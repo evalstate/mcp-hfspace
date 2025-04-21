@@ -1,6 +1,6 @@
 {
   "name": "@llmindset/mcp-hfspace",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "MCP Server to connect to Hugging Face spaces. Simple configuration, Claude Desktop friendly.",
   "type": "module",
   "publishConfig": {
