@@ -2,9 +2,9 @@
 
 Read the introduction here [llmindset.co.uk/resources/mcp-hfspace/](https://llmindset.co.uk/resources/mcp-hfspace/)
 
-Connect to [Hugging Face Spaces](https://huggingface.co/spaces)  with minimal setup needed - simply add your spaces and go!
+Connect to [Hugging Face Spaces](https://huggingface.co/spaces) with minimal setup needed - simply add your spaces and go!
 
-By default, it connects to `evalstate/FLUX.1-schnell` providing Image Generation capabilities to Claude Desktop.
+By default, it connects to `black-forest-labs/FLUX.1-schnell` providing Image Generation capabilities to Claude Desktop.
 
 ![Default Setup](./images/2024-12-09-flower.png)
 
@@ -52,8 +52,7 @@ An example configuration for using a modern image generator, vision model and te
     }
 ```
 
-
-To use private spaces, supply your Hugging Face Token with either the  `--hf-token=hf_...` argument or `HF_TOKEN` environment variable.
+To use private spaces, supply your Hugging Face Token with either the `--hf-token=hf_...` argument or `HF_TOKEN` environment variable.
 
 It's possible to run multiple server instances to use different working directories and tokens if needed.
 
@@ -73,7 +72,7 @@ We'll use Claude to compare images created by `shuttleai/shuttle-3.1-aesthetic` 
 
 ### Example 2 - Vision Model (Upload Image)
 
-We'll use `merve/paligemma2-vqav2` [space link](https://huggingface.co/spaces/merve/paligemma2-vqav2) to query an image. In this case, we specify the filename which is available in the Working Directory: we  don't want to upload the Image directly to Claude's context window. So, we can prompt Claude:
+We'll use `merve/paligemma2-vqav2` [space link](https://huggingface.co/spaces/merve/paligemma2-vqav2) to query an image. In this case, we specify the filename which is available in the Working Directory: we don't want to upload the Image directly to Claude's context window. So, we can prompt Claude:
 
 `use paligemma to find out who is in "test_gemma.jpg"` -> `Text Output: david bowie`
 ![Vision - File Upload](./images/2024-12-09-bowie.png)
@@ -124,7 +123,7 @@ Some recommended spaces to try:
 - black-forest-labs/FLUX.1-schnell
 - yanze/PuLID-FLUX
 - Inspyrenet-Rembg (Background Removal)
-- diyism/Datou1111-shou_xin - [Beautiful Pencil Drawings](https://x.com/ClementDelangue/status/1867318931502895358) 
+- diyism/Datou1111-shou_xin - [Beautiful Pencil Drawings](https://x.com/ClementDelangue/status/1867318931502895358)
 
 ### Chat
 
@@ -150,7 +149,7 @@ Some recommended spaces to try:
 - microsoft/OmniParser
 - merve/paligemma2-vqav2
 - merve/paligemma-doc
-- DawnC/PawMatchAI 
+- DawnC/PawMatchAI
 - DawnC/PawMatchAI/on_find_match_click - for interactive dog recommendations
 
 ## Other Features
@@ -204,7 +203,7 @@ On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
 ### Claude Desktop
 
 - Claude Desktop 0.75 doesn't seem to respond to errors from the MCP Server, timing out instead. For persistent issues, use the MCP Inspector to get a better look at diagnosing what's going wrong. If something suddenly stops working, it's probably due to exhausting your HuggingFace ZeroGPU quota - try again after a short period, or set up your own Space for hosting.
-- Claude Desktop seems to use a hard timeout value of 60s, and doesn't appear  to use Progress Notifications to manage UX or keep-alive. If you are using ZeroGPU spaces, large/heavy jobs may timeout. Check the WORK_DIR for results though; the MCP Server will still capture and save the result if it was produced.
+- Claude Desktop seems to use a hard timeout value of 60s, and doesn't appear to use Progress Notifications to manage UX or keep-alive. If you are using ZeroGPU spaces, large/heavy jobs may timeout. Check the WORK_DIR for results though; the MCP Server will still capture and save the result if it was produced.
 - Claude Desktops reporting of Server Status, logging etc. isn't great - use [@modelcontextprotocol/inspector](https://github.com/modelcontextprotocol/inspector) to help diagnose issues.
 
 ### HuggingFace Spaces

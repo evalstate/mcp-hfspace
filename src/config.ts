@@ -31,7 +31,9 @@ export function parseConfig(): Config {
     debug: argv["debug"],
     spacePaths: (() => {
       const filtered = argv._.filter((arg) => arg.toString().trim().length > 0);
-      return filtered.length > 0 ? filtered : ["evalstate/FLUX.1-schnell"];
+      return filtered.length > 0
+        ? filtered
+        : ["black-forest-labs/FLUX.1-schnell"];
     })(),
   };
 }
