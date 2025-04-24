@@ -36,7 +36,7 @@ By default the current working directory is used for file upload/download. On Wi
 
 It is recommended to override this and set a Working Directory for handling the upload and download of images and other file-based content. Specify either the `--work-dir=/your_directory` argument or `MCP_HF_WORK_DIR` environment variable.
 
-An example configuration for using a modern image generator, vision model and text to speech is below with a working directory set is below:
+An example configuration for using a modern image generator, vision model and text to speech, with a working directory set is below:
 
 ```json
     "mcp-hfspace": {
@@ -122,7 +122,7 @@ Some recommended spaces to try:
 - shuttleai/shuttle-3.1-aesthetic
 - black-forest-labs/FLUX.1-schnell
 - yanze/PuLID-FLUX
-- Inspyrenet-Rembg (Background Removal)
+- gokaygokay/Inspyrenet-Rembg (Background Removal)
 - diyism/Datou1111-shou_xin - [Beautiful Pencil Drawings](https://x.com/ClementDelangue/status/1867318931502895358)
 
 ### Chat
