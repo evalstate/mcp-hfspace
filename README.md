@@ -8,6 +8,12 @@ By default, it connects to `black-forest-labs/FLUX.1-schnell` providing Image Ge
 
 ![Default Setup](./images/2024-12-09-flower.png)
 
+
+## Gradio MCP Support
+
+> [!TIP]
+> Gradio 5.8 now has integrated MCP Support via SSE: https://huggingface.co/blog/gradio-mcp. 
+
 ## Installation
 
 NPM Package is `@llmindset/mcp-hfspace`.
