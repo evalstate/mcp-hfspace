@@ -12,7 +12,7 @@ By default, it connects to `black-forest-labs/FLUX.1-schnell` providing Image Ge
 ## Gradio MCP Support
 
 > [!TIP]
-> Gradio 5.8 now has integrated MCP Support via SSE: https://huggingface.co/blog/gradio-mcp. 
+> Gradio 5.28 now has integrated MCP Support via SSE: https://huggingface.co/blog/gradio-mcp. Check out whether your target Space is MCP Enabled!
 
 ## Installation
 
