@@ -184,7 +184,7 @@ On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
   "mcpServers": {
     "mcp-hfspace": {
       "command": "npx"
-      "args:" [
+      "args": [
         "-y",
         "@llmindset/mcp-hfspace",
         "--work-dir=~/mcp-files/ or x:/temp/mcp-files/",
