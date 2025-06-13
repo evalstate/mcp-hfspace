@@ -12,6 +12,8 @@
 
 ![image](https://github.com/user-attachments/assets/9cbf407b-2330-4330-8274-e47305a555b9)
 
+## mcp-hfspace
+
 Read the introduction here [llmindset.co.uk/resources/mcp-hfspace/](https://llmindset.co.uk/resources/mcp-hfspace/)
 
 Connect to [Hugging Face Spaces](https://huggingface.co/spaces) with minimal setup needed - simply add your spaces and go!
