@@ -1,5 +1,12 @@
 # mcp-hfspace MCP Server 🤗
 
+> [!TIP]
+> This project has been superceded by the official [Hugging Face MCP Server](https://github.com/evalstate/hf-mcp-server) and [Gradio MCP Endpoints](https://huggingface.co/blog/gradio-mcp).
+> You can access and configure Hugging Face MCP services directly at https://hf.co/mcp, including Gradio spaces.
+> 
+> Alternatively you can run hf-mcp-server locally as a STDIO Server, or with robust support for SSE, Streaming HTTP and Streaming HTTP JSON Mode. This also runs a local UI for selecting tools and endpoints - and supports `ToolListChangedNotifications` too.
+
+
 Read the introduction here [llmindset.co.uk/resources/mcp-hfspace/](https://llmindset.co.uk/resources/mcp-hfspace/)
 
 Connect to [Hugging Face Spaces](https://huggingface.co/spaces) with minimal setup needed - simply add your spaces and go!
