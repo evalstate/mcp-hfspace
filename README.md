@@ -6,12 +6,16 @@
 > 
 > Alternatively you can run hf-mcp-server locally as a STDIO Server, or with robust support for SSE, Streaming HTTP and Streaming HTTP JSON Mode. This also runs a local UI for selecting tools and endpoints - and supports `ToolListChangedNotifications` too.
 
+![image](https://github.com/user-attachments/assets/9cbf407b-2330-4330-8274-e47305a555b9)
 
 Read the introduction here [llmindset.co.uk/resources/mcp-hfspace/](https://llmindset.co.uk/resources/mcp-hfspace/)
 
 Connect to [Hugging Face Spaces](https://huggingface.co/spaces) with minimal setup needed - simply add your spaces and go!
 
 By default, it connects to `black-forest-labs/FLUX.1-schnell` providing Image Generation capabilities to Claude Desktop.
+
+
+
 
 ![Default Setup](./images/2024-12-09-flower.png)
 
