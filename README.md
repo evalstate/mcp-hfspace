@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/evalstate-mcp-hfspace-badge.png)](https://mseep.ai/app/evalstate-mcp-hfspace)
+
 # mcp-hfspace MCP Server 🤗
 
 > [!TIP]
